@@ -80,12 +80,26 @@
                 </div>
                 <div class="card-body">
                     <canvas id="chartBilanStats"></canvas>
-                    <button class="btn btn-danger mt-2" onclick="downloadChart('chartBilanStats', 'bilan_sar_stats.png')">Télécharger</button>
+                    <button class="btn btn-danger mt-2" onclick="downloadChart('chartBilanStats', 'bilan_humain.png')">Télécharger</button>
                 </div>
             </div>
         </div>
     </div>
     
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5>Nombre d'entrées par zone</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="chartZones"></canvas>
+                <button class="btn btn-info mt-2" onclick="downloadChart('chartZones', 'zones_count.png')">Télécharger</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -148,6 +162,25 @@
         options: { 
             responsive: true, 
             scales: { y: { beginAtZero: true } } 
+        }
+    });
+
+    const zonesLabels = @json(array_keys($zoneCounts));
+    const zonesCounts = @json(array_values($zoneCounts));
+
+    new Chart(document.getElementById('chartZones').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: zonesLabels,
+            datasets: [{
+                label: "Nombre d'entrées",
+                backgroundColor: '#17a2b8',
+                data: zonesCounts
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
         }
     });
 </script>

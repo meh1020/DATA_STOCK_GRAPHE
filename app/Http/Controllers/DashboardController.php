@@ -70,9 +70,19 @@ class DashboardController extends Controller
         SUM(evasan) as evasan_total
     ')->first();
 
+    // 🔹 Comptage des entrées pour chaque zone (1 à 9)
+    $zoneCounts = [];
+    for ($i = 1; $i <= 9; $i++) {
+        $modelClass = "App\\Models\\zone_$i";
+        if (class_exists($modelClass)) {
+            $zoneCounts["Zone $i"] = $modelClass::count();
+        }
+    }
+
     return view('dashboard', compact(
         'articleCount', 'avurnavCount', 'pollutionCount', 'sitrepCount', 'bilanSarCount', 
-        'typesData', 'causesData', 'regionsData', 'bilanStats'
+        'typesData', 'causesData', 'regionsData', 'bilanStats', 'zoneCounts'
     ));
     }
+    
 }

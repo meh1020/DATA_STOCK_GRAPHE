@@ -61,7 +61,7 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header bg-warning text-dark">
                     <h5>Répartition des Bilans SAR par Région</h5>
@@ -72,8 +72,22 @@
                 </div>
             </div>
         </div>
+    
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5>Statistiques des Bilans SAR</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartBilanStats"></canvas>
+                    <button class="btn btn-danger mt-2" onclick="downloadChart('chartBilanStats', 'bilan_sar_stats.png')">Télécharger</button>
+                </div>
+            </div>
+        </div>
     </div>
+    
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -107,6 +121,34 @@
         type: 'bar',
         data: { labels: regionsLabels, datasets: [{ label: 'Nombre de bilans SAR', backgroundColor: '#FFC107', data: regionsCounts }] },
         options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+
+    const bilanLabels = ["POB", "Survivants", "Blessés", "Morts", "Disparus", "Evasan"];
+    const bilanCounts = {!! json_encode(isset($bilanStats) ? [
+    $bilanStats->pob_total ?? 0,
+    $bilanStats->survivants_total ?? 0,
+    $bilanStats->blesses_total ?? 0,
+    $bilanStats->morts_total ?? 0,
+    $bilanStats->disparus_total ?? 0,
+    $bilanStats->evasan_total ?? 0
+] : [0, 0, 0, 0, 0, 0]) !!};
+
+
+
+    new Chart(document.getElementById('chartBilanStats').getContext('2d'), {
+        type: 'bar',
+        data: { 
+            labels: bilanLabels, 
+            datasets: [{ 
+                label: 'Total des incidents', 
+                backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336', '#9C27B0', '#795548'], 
+                data: bilanCounts 
+            }] 
+        },
+        options: { 
+            responsive: true, 
+            scales: { y: { beginAtZero: true } } 
+        }
     });
 </script>
 

@@ -60,9 +60,19 @@ class DashboardController extends Controller
                 ];
             });
 
-        return view('dashboard', compact(
-            'articleCount', 'avurnavCount', 'pollutionCount', 'sitrepCount', 'bilanSarCount', 
-            'typesData', 'causesData', 'regionsData'
-        ));
+         // Récupération des totaux pour les statistiques SAR
+        $bilanStats = BilanSar::selectRaw('
+        SUM(pob) as pob_total, 
+        SUM(survivants) as survivants_total, 
+        SUM(blesses) as blesses_total, 
+        SUM(morts) as morts_total, 
+        SUM(disparus) as disparus_total, 
+        SUM(evasan) as evasan_total
+    ')->first();
+
+    return view('dashboard', compact(
+        'articleCount', 'avurnavCount', 'pollutionCount', 'sitrepCount', 'bilanSarCount', 
+        'typesData', 'causesData', 'regionsData', 'bilanStats'
+    ));
     }
 }

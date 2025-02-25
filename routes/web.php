@@ -14,6 +14,7 @@ use App\Http\Controllers\CauseEvenementController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\test;
+use App\Http\Controllers\PecheController;
 
 // WELCOME
 Route::get('/', function () {
@@ -71,3 +72,7 @@ Route::prefix('bilan_sars')->group(function () {
 Route::resource('bilan_sars', BilanSarController::class)->except(['edit', 'update', 'show']);
 Route::get('general', [test::class, 'index']);
 Route::post('/bilan_sars/import', [BilanSarController::class, 'import'])->name('bilan_sars.import');
+
+//Peche
+Route::resource('peche', PecheController::class);
+Route::post('/import-peche', [PecheController::class, 'importCSV'])->name('peche.import');

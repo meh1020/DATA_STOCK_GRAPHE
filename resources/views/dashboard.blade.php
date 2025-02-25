@@ -31,6 +31,31 @@
                 <a href="{{ route('pollutions.index') }}" class="small-box-footer">Plus d'info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box" style="background-color: #F44336; color: white;">
+                <div class="inner">
+                    <h3>{{ $sitrepCount }}</h3>
+                    <p>Nombre de Sitrep</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                <a href="{{ route('sitreps.index') }}" class="small-box-footer">Plus d'info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+            <div class="small-box" style="background-color: #2196F3; color: white;">
+                <div class="inner">
+                    <h3>{{ $bilanSarCount }}</h3>
+                    <p>Nombre de BilanSar</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="{{ route('bilan_sars.index') }}" class="small-box-footer">Plus d'info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
     </div>
 
     <!-- Graphiques -->
@@ -95,11 +120,26 @@
                 <h5>Nombre d'entrées par zone</h5>
             </div>
             <div class="card-body">
-                <canvas id="chartZones"></canvas>
+                <canvas id="chartZones" width="400" height="300"></canvas>
                 <button class="btn btn-info mt-2" onclick="downloadChart('chartZones', 'zones_count.png')">Télécharger</button>
             </div>
         </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5>Répartition des navires par Flag</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="chartFlags" width="400" height="300"></canvas>
+                <button class="btn btn-secondary mt-2" onclick="downloadChart('chartFlags', 'flags_distribution.png')">Télécharger</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </div>
 
 
@@ -181,6 +221,24 @@
         options: {
             responsive: true,
             scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    const flagLabels = @json($flagData->pluck('name'));
+    const flagCounts = @json($flagData->pluck('count'));
+
+    new Chart(document.getElementById('chartFlags').getContext('2d'), {
+        type: 'pie',
+        data: {
+            labels: flagLabels,
+            datasets: [{
+                label: 'Nombre de navires',
+                backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33A8'],
+                data: flagCounts
+            }]
+        },
+        options: {
+            responsive: true
         }
     });
 </script>

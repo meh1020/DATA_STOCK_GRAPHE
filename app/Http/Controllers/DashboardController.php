@@ -9,6 +9,7 @@ use App\Models\Pollution;
 use App\Models\Sitrep;
 use App\Models\BilanSar;
 use App\Models\Region;
+use App\Models\Peche;
 
 class DashboardController extends Controller
 {
@@ -79,9 +80,20 @@ class DashboardController extends Controller
         }
     }
 
+     // 🔹 **Ajout du comptage des flags des navires de pêche**
+     $flagData = Peche::selectRaw('flag, COUNT(*) as count')
+     ->groupBy('flag')
+     ->get()
+     ->map(function ($item) {
+         return [
+             'name' => $item->flag,
+             'count' => $item->count
+         ];
+     });
+
     return view('dashboard', compact(
         'articleCount', 'avurnavCount', 'pollutionCount', 'sitrepCount', 'bilanSarCount', 
-        'typesData', 'causesData', 'regionsData', 'bilanStats', 'zoneCounts'
+        'typesData', 'causesData', 'regionsData', 'bilanStats', 'zoneCounts', 'flagData'
     ));
     }
     

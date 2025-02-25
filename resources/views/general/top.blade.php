@@ -33,6 +33,10 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{ route('list.mada') }}" class="nav-link {{ request()->is('listeMada') ? 'activo' : '' }}">Liste des données MADA</a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{{ route('peche.index') }}" class="nav-link {{ request()->is('peche') ? 'activo' : '' }}">Pêche</a>
+      </li>
+
     </ul>
 
 
